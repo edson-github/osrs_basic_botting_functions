@@ -45,22 +45,24 @@ pytesseract.pytesseract.tesseract_cmd = data[0]['Config']['tesseract_path'] + "t
 try:
     im = Image.open("images/tynan_shop.png")
     text = pytesseract.image_to_string(im)
-    print(bcolors.OK + "Testing Tesseract is configured: Passed |", text)
+    print(f"{bcolors.OK}Testing Tesseract is configured: Passed |", text)
 except:
     pass
 os.environ["TESSDATA_PREFIX"] = data[0]['Config']['tesseract_path'] # + "tessdata"
 try:
     im = Image.open("images/tynan_shop.png")
     text = pytesseract.image_to_string(im)
-    print(bcolors.OK + "Testing Tesseract is configured: Passed |", text)
+    print(f"{bcolors.OK}Testing Tesseract is configured: Passed |", text)
 except:
     os.environ["TESSDATA_PREFIX"] = data[0]['Config']['tesseract_path'] + "tessdata"
     try:
         im = Image.open("images/tynan_shop.png")
         text = pytesseract.image_to_string(im)
-        print(bcolors.OK + "Testing Tesseract is configured: Passed |", text)
+        print(f"{bcolors.OK}Testing Tesseract is configured: Passed |", text)
     except:
-        print(bcolors.FAIL +"Error setting up tesseract: Check the pyconfig.yaml is set up to your tesseract path or is installed correctly, go here and install latest version: " + 'https://digi.bib.uni-mannheim.de/tesseract/?C=M;O=D')
+        print(
+            f"{bcolors.FAIL}Error setting up tesseract: Check the pyconfig.yaml is set up to your tesseract path or is installed correctly, go here and install latest version: https://digi.bib.uni-mannheim.de/tesseract/?C=M;O=D"
+        )
 
 # Constants
 gdi32 = ctypes.WinDLL('gdi32.dll')
@@ -84,18 +86,19 @@ def get_scaling_factor():
     logical_screen_height = gdi32.GetDeviceCaps(desktop, DeviceCap.VERTRES)
     physical_screen_height = gdi32.GetDeviceCaps(desktop, DeviceCap.DESKTOPVERTRES)
 
-    # Calculate the scaling factor
-    scaling_factor = physical_screen_height / logical_screen_height
-
-    return scaling_factor
+    return physical_screen_height / logical_screen_height
 
 
 # Usage
 scaling_factor = get_scaling_factor()
 if scaling_factor == 1.0:
-    print(bcolors.OK +"Scaling Factor:", scaling_factor * 100, "%")
+    print(f"{bcolors.OK}Scaling Factor:", scaling_factor * 100, "%")
 else:
-    print(bcolors.FAIL +"Scaling Factor: Failed set to 100% | Actual:", scaling_factor * 100, "%")
+    print(
+        f"{bcolors.FAIL}Scaling Factor: Failed set to 100% | Actual:",
+        scaling_factor * 100,
+        "%",
+    )
 
 def get_os_configuration():
     # Get scale and layout information
@@ -120,14 +123,19 @@ def get_os_configuration():
 scale_factor, font_size, width, height = get_os_configuration()
 
 if width == 1920 and height == 1080:
-    print(bcolors.OK +"Resolution:", width, "x", height)
+    print(f"{bcolors.OK}Resolution:", width, "x", height)
 else:
-    print(bcolors.FAIL +"Resolution not set correctly: Failed set to 1920 x 1080 | Actual:", width, "x", height)
+    print(
+        f"{bcolors.FAIL}Resolution not set correctly: Failed set to 1920 x 1080 | Actual:",
+        width,
+        "x",
+        height,
+    )
 try:
-    print(bcolors.OK + "tesseract version:", pytesseract.get_tesseract_version())
+    print(f"{bcolors.OK}tesseract version:", pytesseract.get_tesseract_version())
 except SystemExit:
-    print(bcolors.FAIL +"tesseract version detailed: not found")
-    
+    print(f"{bcolors.FAIL}tesseract version detailed: not found")
+
 print(bcolors.RESET)
 filename = data[0]['Config']['pc_profile']
 
@@ -141,15 +149,12 @@ try:
     os.remove(filename + osrs + random_file)
 except OSError:
     pass
-except FileNotFoundError:
-    pass
-
-if platform.system() == 'Linux' or platform.system() == 'Mac':
+if platform.system() in ['Linux', 'Mac']:
     filename = filename + osrs + "/jagexcache/oldschool/LIVE/"
 else:
     filename = filename + osrs + "\\jagexcache\\oldschool\\LIVE\\"
 
-try:    
+try:
     for f in os.listdir(filename):
         try:
             if not f.startswith("main_file"):
@@ -157,12 +162,7 @@ try:
             os.remove(os.path.join(filename, f))
         except OSError:
             pass
-        except FileNotFoundError:
-            pass
-
 except OSError:
-    pass
-except FileNotFoundError:
     pass
 #
 print('jagex files deleted')
@@ -267,7 +267,7 @@ def Image_to_Text(preprocess, image, parse_config='--psm 7'):
     resizeImage()
     change_brown_black()
     # construct the argument parse and parse the arguments
-    image = cv2.imread('images/' + image)
+    image = cv2.imread(f'images/{image}')
     image = cv2.bitwise_not(image)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # check to see if we should apply thresholding to preprocess the
@@ -284,7 +284,7 @@ def Image_to_Text(preprocess, image, parse_config='--psm 7'):
 
     # write the grayscale image to disk as a temporary file so we can
     # apply OCR to it
-    filename = "{}.png".format(os.getpid())
+    filename = f"{os.getpid()}.png"
     cv2.imwrite(filename, gray)
     # load the image as a PIL/Pillow image, apply OCR, and then delete
     # the temporary file
@@ -297,14 +297,14 @@ def Image_to_Text(preprocess, image, parse_config='--psm 7'):
 def screen_Image_new(name='screenshot.png'):
     x, y, w, h = core.getWindow(data[0]['Config']['client_title'])
     im = ImageGrab.grab(bbox=(x, y, x+w, y+h))
-    im.save('images/' + name, 'png')
+    im.save(f'images/{name}', 'png')
 
 def screen_Image(left=0, top=0, right=0, bottom=0, name='screenshot.png'):
     if left != 0 or top != 0 or right != 0 or bottom != 0:
         myScreenshot = ImageGrab.grab(bbox=(left, top, right, bottom))
     else:
         myScreenshot = ImageGrab.grab()
-    myScreenshot.save('images/' + name)
+    myScreenshot.save(f'images/{name}')
 
 
 def Image_color_new():
@@ -527,8 +527,8 @@ def find_Object_closest(item, left=0, top=0, right=0, bottom=0, clicker='left', 
         return False
     #print(close_list)
     #print(close_points)
-    if len(close_list) == 0:
-       return False
+    if not close_list:
+        return False
     min_value = min(close_list)
     min_index = close_list.index(min_value)
     coords = close_points[min_index]

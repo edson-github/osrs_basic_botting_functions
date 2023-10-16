@@ -37,14 +37,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def skill_lvl_up():
     counter = 0
@@ -80,7 +77,7 @@ def bool_alpha(temp, threshold=0.89, left=0, top=0, right=0, bottom=0):
     # read screenshot
     img = cv2.imread('screenshot_bool.png')
     # read image template
-    template = cv2.imread('images/' + temp, cv2.IMREAD_UNCHANGED)
+    template = cv2.imread(f'images/{temp}', cv2.IMREAD_UNCHANGED)
     # extract base image and alpha channel and make alpha 3 channels
     temp_a = template[:, :, 0:3]
     alpha = template[:, :, 3]
@@ -100,7 +97,7 @@ def value_alpha(temp, threshold=0.89, left=0, top=0, right=0, bottom=0):
     # read screenshot
     img = cv2.imread('screenshot_bool.png')
     # read image template
-    template = cv2.imread('images/' + temp, cv2.IMREAD_UNCHANGED)
+    template = cv2.imread(f'images/{temp}', cv2.IMREAD_UNCHANGED)
     # extract base image and alpha channel and make alpha 3 channels
     temp_a = template[:, :, 0:3]
     alpha = template[:, :, 3]
@@ -122,7 +119,7 @@ def Image_count_alpha(temp, threshold=0.89, left=0, top=0, right=0, bottom=0):
     img = cv2.imread('screenshot.png')
     # read pawn image template
     # template = cv2.imread('chess_template.png', cv2.IMREAD_UNCHANGED)
-    template = cv2.imread('images/' + temp, cv2.IMREAD_UNCHANGED)
+    template = cv2.imread(f'images/{temp}', cv2.IMREAD_UNCHANGED)
     hh, ww = template.shape[:2]
     # extract pawn base image and alpha channel and make alpha 3 channels
     temp_a = template[:, :, 0:3]
@@ -202,8 +199,7 @@ def steal_man():
     time_end = 0
     time_start = time.time()
     while True:
-        caps = keyboard.is_pressed('capslock')
-        if caps:
+        if caps := keyboard.is_pressed('capslock'):
             print('thieving script stopped')
             exit()
         thieve_object(4)
@@ -238,8 +234,7 @@ def steal_tea():
     global actions
     caps = False
     while True:
-        caps = keyboard.is_pressed('capslock')
-        if caps:
+        if caps := keyboard.is_pressed('capslock'):
             print('thieving script stopped')
             exit()
         thieve_object(0,0,0,860,750)
@@ -257,8 +252,7 @@ def steal_drop_fruit():
     global actions
     caps = False
     while True:
-        caps = keyboard.is_pressed('capslock')
-        if caps:
+        if caps := keyboard.is_pressed('capslock'):
             print('thieving script stopped')
             exit()
         thieve_object(0,0,0,860,750)

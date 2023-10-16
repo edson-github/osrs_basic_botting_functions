@@ -70,14 +70,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
 def random_break(start, c):
     global newTime_break
     startTime = time.time()
@@ -102,14 +99,13 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     global actions
     b = random.uniform(20, 250)
-    actions = 'pausing for ' + str(b) + ' seconds'
+    actions = f'pausing for {b} seconds'
     time.sleep(b)
     newTime_break = True
 
@@ -125,10 +121,8 @@ options = {0: random_inventory,
 def get_live_info():
     '''Returns specific live information from the game client via the Status Socket plugin.'''
     try:
-        f = open('live_data.json', "r+")
-        data = json.load(f)
-        #print(data)
-        f.close()
+        with open('live_data.json', "r+") as f:
+            data = json.load(f)
         return data
     except:
         pass
@@ -136,16 +130,12 @@ def get_live_info():
 def update_pose():
     c = s.get("http://localhost:8080/events", stream=True)
     data = simplejson.loads(c.text)
-    #print(data)
-    pose = data['animation pose']
-    return pose
+    return data['animation pose']
 
 def update_animation():
     c = s.get("http://localhost:8080/events", stream=True)
     data = simplejson.loads(c.text)
-    #print(data)
-    animation = data['animation']
-    return animation
+    return data['animation']
 
 def moveAcross(move):
     global s_spot
@@ -174,7 +164,9 @@ def drop_wood(type):
     actions = "dropping wood"
     invent_crop()
     drop_item()
-    image_Rec_clicker(type + '_icon.png', 'dropping item', 5, 5, 0.9, 'left', 10, False)
+    image_Rec_clicker(
+        f'{type}_icon.png', 'dropping item', 5, 5, 0.9, 'left', 10, False
+    )
     release_drop_item()
     return "dropping done"
 
@@ -186,7 +178,7 @@ def firespot(spot):
     xy_firespots = [[45, 55], [50, 40], [30, 35], [25, 20], [25, 20], [-15, -5]]
     x = xy_firespots[firespots.index(spot)][0]
     y = xy_firespots[firespots.index(spot)][1]
-    mini_map_image(spot + '.png', x, y, 0.7, 'left', 15, 0)
+    mini_map_image(f'{spot}.png', x, y, 0.7, 'left', 15, 0)
 
 def invent_enabled():
     return Image_count('inventory_enabled.png', threshold=0.99)
@@ -208,14 +200,14 @@ def deposit_bank_items(type):
             mini_map_image('draynor_bank_spot.png', 45, 40, 0.7, 'left', 10, 10)
             return bank
         mini_map_image('draynor_bank_spot.png', 45, 40, 0.7, 'left', 10, 10)
-        return bank
     else:
         actions = "bank not found"
         mini_map_image('draynor_bank_spot.png', 45, 40, 0.8, 'left', 10, 10)
         random_breaks(5, 10)
         bank_spot()
         random_breaks(5, 7)
-        return bank
+
+    return bank
 
 def change_brown_black():
     # Load the aerial image and convert to HSV colourspace
@@ -256,7 +248,7 @@ def Image_to_Text(preprocess, image, parse_config='--psm 7'):
     resizeImage()
     change_brown_black()
     # construct the argument parse and parse the arguments
-    image = cv2.imread('images/' + image)
+    image = cv2.imread(f'images/{image}')
     image = cv2.bitwise_not(image)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # check to see if we should apply thresholding to preprocess the
@@ -273,7 +265,7 @@ def Image_to_Text(preprocess, image, parse_config='--psm 7'):
 
     # write the grayscale image to disk as a temporary file so we can
     # apply OCR to it
-    filename = "{}.png".format(os.getpid())
+    filename = f"{os.getpid()}.png"
     cv2.imwrite(filename, gray)
     # load the image as a PIL/Pillow image, apply OCR, and then delete
     # the temporary file
@@ -294,13 +286,15 @@ def doFireMaking(spot,type,ws,we):
     while invent_count > w:
         actions = 'Burning Wood'
         clue_count = Image_count('clue_nest.png')
-        wood_count = Image_count(type + '_icon.png')
+        wood_count = Image_count(f'{type}_icon.png')
         invent_count = wood_count + clue_count
         #print("wood: ", invent_count)
         random_breaks(0.1, 2)
         Image_Rec_single('tinderbox.png', 'burning wood', 5, 5, 0.9, 'left', 8, False)
         random_breaks(0.1, 1)
-        Image_Rec_single(type + '_icon.png', 'burning wood', 5, 5, 0.9, 'left', 8, False)
+        Image_Rec_single(
+            f'{type}_icon.png', 'burning wood', 5, 5, 0.9, 'left', 8, False
+        )
         fire = False
         time_start = time.time()
         time_end = 0
@@ -309,7 +303,7 @@ def doFireMaking(spot,type,ws,we):
             fire = xp_gain_check('firemaking_xp.png', 0.85)
             if not fire:
                 fire = xp_gain_check('firemaking_xp2.png', 0.85)
-            actions = 'Burning Wood: ' + str(fire) + ' | seconds count: %.2f' % time_end
+            actions = f'Burning Wood: {str(fire)}' + ' | seconds count: %.2f' % time_end
             time_end = time.time() - time_start
 
             #print("seconds count: %.2f" % time_end)
@@ -363,12 +357,20 @@ def waitforaction(num):
     pose = update_pose()
     while pose != num:
         time.sleep(0.1)
-        actions = "moving - " + str(pose)
+        actions = f"moving - {str(pose)}"
         pose = update_pose()
 
 def doCutting(cutting, color, Take_Human_Break):
     global cutting_text, actions, coords
-    if cutting.strip().lower() != 'woodcutting' and cutting.strip().lower() != 'uoodcutting' and cutting.strip().lower() != 'voodcutting' and cutting.strip().lower() != 'joodcuttine' and cutting.strip().lower() != 'foodcuttir' and cutting.strip().lower() != 'foodcuttin' and cutting.strip().lower() != 'joodcuttinc':
+    if cutting.strip().lower() not in [
+        'woodcutting',
+        'uoodcutting',
+        'voodcutting',
+        'joodcuttine',
+        'foodcuttir',
+        'foodcuttin',
+        'joodcuttinc',
+    ]:
         cutting_text = 'Not Cutting'
         random_breaks(0.2, 3)
         coords = find_Object(color,0,0,800,700)
@@ -410,7 +412,7 @@ def count_items():
     t_end = time.time() + (60 * 60 * Run_Duration_hours)
     while time.time() < t_end:
         global wood_type, powerlist, wood_count, mined_text, clue_count, ex
-        wood_count = int(Image_count(wood_type + '_icon.png'))
+        wood_count = int(Image_count(f'{wood_type}_icon.png'))
         clue_count = int(Image_count('clue_nest.png'))
         time.sleep(0.1)
         if ex:
@@ -461,7 +463,7 @@ def powercutter(color=0, type='wood', action_taken='none', spot='', ws=0, we=3, 
             pyautogui.press('esc')
         # invent_crop()
         clue_count = Image_count('clue_nest.png')
-        wood_count = Image_count(type + '_icon.png')
+        wood_count = Image_count(f'{type}_icon.png')
         invent_count = wood_count + clue_count
         #print("wood: ", invent_count)
         if invent_count > inv:

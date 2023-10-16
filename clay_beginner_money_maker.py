@@ -66,13 +66,12 @@ def randomizer(timer_breaks, ibreaks):
     # b = random.uniform(4, 5)
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 def random_pause():
     global actions
     b = random.uniform(20, 250)
-    actions = 'pausing for ' + str(b) + ' seconds'
+    actions = f'pausing for {b} seconds'
     time.sleep(b)
     newTime_break = True
 
@@ -96,9 +95,7 @@ def determine_position_to_bank():
         return 1
     if functions.mini_map_bool('rim_mine_spot1.png', 0.85):
         actions = 'player located @ step 0'
-        return 0
-    else:
-        return 0
+    return 0
 
 def determine_position_to_clay():
     global ore_count, gem_count, clue_count, actions
@@ -133,9 +130,7 @@ def determine_position_to_clay():
         return 5
     if functions.mini_map_bool('bank_deposit.png', 0.85):
         actions = 'player located @ step 0'
-        return 0
-    else:
-        return 0
+    return 0
 
 def rim_minetobank():
     global actions
@@ -241,11 +236,12 @@ def rim_minetoclay():
         while spot != True:
             actions = 'finding 1st clay mine step'
             for i in nums(1, 5):
-                if i == 5 or i == 3 or i == 1:
+                if i in [5, 3, 1]:
                     y = 5
-                spot = functions.mini_map_image('clay_deposit_spot' + str(i) + '.png', x, y, 0.85, 'left')
-                if spot:
-                    actions = '1st clay mine step found _' + str(i)
+                if spot := functions.mini_map_image(
+                    f'clay_deposit_spot{str(i)}.png', x, y, 0.85, 'left'
+                ):
+                    actions = f'1st clay mine step found _{str(i)}'
                     break
 
 
@@ -311,9 +307,7 @@ def depositbox():
         ore_count = int(inv_count('clay'))
         clue_count = int(count_geo())
         total_invent = gem_count + ore_count + clue_count
-        if total_invent > 0:
-            return False
-        return True
+        return total_invent <= 0
     actions = 'deposit box not found...'
     return False
 
@@ -324,7 +318,7 @@ def count_geo():
 def count_gems2():
     return Image_count('gem_icon2.png')
 def inv_count(name):
-    return Image_count(name + '_ore.png')
+    return Image_count(f'{name}_ore.png')
 
 def timer_countdown():
     global Run_Duration_hours, stop_script
@@ -384,15 +378,15 @@ def moneymaker_clay(Take_Human_Break=False, Run_Duration_hours=4, color=6):
             actions = 'Going to Mining Spot'
             rim_minetoclay()
         mined_text = Image_to_Text('thresh', 'textshot.png')
-        if mined_text.strip().lower() != 'mining' and mined_text.strip().lower() != 'mininq':
+        if mined_text.strip().lower() not in ['mining', 'mininq']:
             #actions = 'Not mining'
             spot = functions.find_Object(color, 0, 0, 700, 800)
             if Take_Human_Break:
                 c = random.triangular(0.05, 30, 0.5)
-                time.sleep(c)
             else:
                 c = random.triangular(0.05, 0.1, 0.08)
-                time.sleep(c)
+
+            time.sleep(c)
 
 
 x = random.randrange(100, 250)

@@ -84,17 +84,15 @@ def printWindows():
     win32gui.EnumWindows(winEnumHandler, None)
 
 print('Operating system:', platform.system())
-if platform.system() == 'Linux' or platform.system() == 'Mac':
+if platform.system() in ['Linux', 'Mac']:
     try:
         findWindow_Linux(data[0]['Config']['client_title'])
     except BaseException:
         print("unable to find window:", data[0]['Config']['client_title'], "please see list of window names below:")
         printWindows()
-        pass
 else:
     try:
         findWindow(data[0]['Config']['client_title'])
     except BaseException:
         print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
         printWindows()
-        pass

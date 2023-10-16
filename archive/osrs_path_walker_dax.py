@@ -32,7 +32,7 @@ def get_location_points(location):
 
 def save_json_data(data):
     data = simplejson.loads(data)
-    with open(f"paths.json", "w") as outfile:
+    with open("paths.json", "w") as outfile:
         simplejson.dump(data, outfile)
 
 def get_current_location():

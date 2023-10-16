@@ -51,13 +51,12 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 

@@ -40,15 +40,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 client_top_border = 30
 client_side_border = 50
 tiles_pixels = 4
@@ -199,7 +195,7 @@ def determine_position_to_airalter():
                 c = random.uniform(0.1, 1)
                 time.sleep(c)
 
-    if runes == 0 or runes == 1:
+    if runes in [0, 1]:
         return 8
     if mini_map_bool('air_craft_bank.png', 0.7):
         print('player located @ step 1')
@@ -283,10 +279,9 @@ def to_air_craft():
             while plugin() != 808:
                 time.sleep(0.1)
             c = random.uniform(0.1, 1)
-            time.sleep(c)
         else:
             c = random.uniform(6.5, 8.5)
-            time.sleep(c)
+        time.sleep(c)
         withdraw_bank_runes(bank_runes_position_x, bank_runes_position_y)
 
     if step == 0:
@@ -442,7 +437,7 @@ def to_bank():
     if invent == 0:
         pyautogui.press('esc')
     runes = count_runes()
-    if runes == 0 or runes == 1:
+    if runes in [0, 1]:
         step = determine_position_to_bank()
     else:
         make_runes_at_alter()
@@ -618,10 +613,9 @@ def make_runes_at_alter():
         while plugin() != 808:
             time.sleep(0.1)
         c = random.uniform(0.1, 1)
-        time.sleep(c)
     else:
         c = random.uniform(1.5, 3)
-        time.sleep(c)
+    time.sleep(c)
     functions.find_Object(2, left=0, top=0, right=w_win, bottom=h_win)
     print('making runes')
     if Plugin_Enabled:
@@ -629,10 +623,9 @@ def make_runes_at_alter():
         while plugin() != 808:
             time.sleep(0.1)
         c = random.uniform(0.1, 1)
-        time.sleep(c)
     else:
         c = random.uniform(6.5, 8)
-        time.sleep(c)
+    time.sleep(c)
     functions.find_Object(1, left=0, top=0, right=w_win, bottom=h_win)
     print('enter rune area')
     if Plugin_Enabled:
@@ -640,10 +633,10 @@ def make_runes_at_alter():
         while plugin() != 808:
             time.sleep(0.1)
         c = random.uniform(0.1, 1)
-        time.sleep(c)
     else:
         c = random.uniform(4, 6)
-        time.sleep(c)
+
+    time.sleep(c)
 
 
 def count_runes():
@@ -663,12 +656,8 @@ def withdraw_bank_runes(rune_x,rune_y):
     while bank == False:
         if error_c > 3:
             exit()
-        if Plugin_Enabled:
-            if plugin() == 808:
-                functions.find_Object(1, left=0, top=0, right=w_win, bottom=h_win) # mark / highlight object marker for the bank booth - GREEN
-        else:
-            functions.find_Object(1, left=0, top=0, right=w_win,
-                                 bottom=h_win)  # mark / highlight object marker for the bank booth - GREEN
+        if Plugin_Enabled and plugin() == 808 or not Plugin_Enabled:
+            functions.find_Object(1, left=0, top=0, right=w_win, bottom=h_win) # mark / highlight object marker for the bank booth - GREEN
         x = random.randrange(800, 900)
         y = random.randrange(800, 900)
         pyautogui.moveTo(x, y, duration=0.1)
@@ -702,10 +691,9 @@ def runecrafting_air_runes(bankrune_x=185,bankrune_y=305):
             while plugin() != 808:
                 time.sleep(0.1)
             c = random.uniform(0.1, 1)
-            time.sleep(c)
         else:
             c = random.uniform(6.5, 8.5)
-            time.sleep(c)
+        time.sleep(c)
         make_runes_at_alter()
     b = 1  # random.randrange(1, 3)
     options = {1: to_bank

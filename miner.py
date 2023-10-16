@@ -61,14 +61,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def random_break(start, c):
     global newTime_break
@@ -92,12 +89,11 @@ def randomizer(timer_breaks, ibreaks):
     # b = random.uniform(4, 5)
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 
@@ -190,7 +186,7 @@ def count_gems2():
     return Image_count('gem_icon2.png')
 
 def inv_count(name):
-    return Image_count(name + '_ore.png')
+    return Image_count(f'{name}_ore.png')
 
 def timer_countdown():
     global Run_Duration_hours
@@ -251,7 +247,7 @@ def powerminer_text(ore, num, Take_Human_Break=False, Run_Duration_hours=5):
             random_breaks(0.2, 0.7)
         mined_text = Image_to_Text('thresh', 'textshot.png')
         #print_progress(time_left, spot, mined_text, powerlist, ore, actions)
-        if mined_text.strip().lower() != 'mining' and mined_text.strip().lower() != 'mininq':
+        if mined_text.strip().lower() not in ['mining', 'mininq']:
             mined_text = 'Not Mining'
             #print_progress(time_left, spot, mined_text, powerlist, ore, actions)
             #random_breaks(0.05, 0.1)

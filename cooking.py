@@ -27,7 +27,7 @@ from functions import exit_bank
 pyautogui.FAILSAFE = False
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 
@@ -56,14 +56,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def random_break(start, c):
     global newTime_break
@@ -89,8 +86,7 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 iflag = False
@@ -113,7 +109,7 @@ def Image_Rec_single_random(image, threshold=0.7, clicker='left'):
     functions.screen_Image(620, 480, 820, 750, 'closest.png')
     img_rgb = cv2.imread('images/closest.png')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('images/' + image, 0)
+    template = cv2.imread(f'images/{image}', 0)
     w, h = template.shape[::-1]
     pt = None
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
@@ -172,7 +168,7 @@ def item_inv(item):
     myScreenshot.save(r"screen.png")
     img_rgb = cv2.imread('screen.png')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('images/' + str(item), 0)
+    template = cv2.imread(f'images/{str(item)}', 0)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
@@ -282,7 +278,7 @@ def apple_pie():
 def pastry():
     a = random.triangular(0.1, 0.5, 5)
     bank = False
-    while bank == False:
+    while not bank:
         find_Object_precise(1, 5, 0, 0, 860, 775)
         b = random.triangular(0.1, 10, 0.5)
         time.sleep(b)
@@ -315,7 +311,7 @@ def pastry():
 def pizza():
     a = random.triangular(0.1, 0.5, 5)
     bank = False
-    while bank == False:
+    while not bank:
         find_Object_precise(0, 5, 0, 0, 620, 775)
         b = random.triangular(3, 10, 3.5)
         time.sleep(b)
@@ -375,7 +371,7 @@ def make_banking_food(volume, bank_food):
                         'pie_shell': pieshell}
         bank_options[bank_food]()
         volume -= 1
-        print(bank_food + ' left: ', round(volume / 10))
+        print(f'{bank_food} left: ', round(volume / 10))
 
 def to_alkarid_cookspot():
     print("\rto cookspot")
@@ -447,7 +443,7 @@ def combine_items(item, Pause=False):
     functions.Image_Rec_single_closest("images/vial_water.png") # water
     c = random.uniform(0.1,0.9)
     time.sleep(c)
-    Image_Rec_single_random("images/" + item + "_icon.png") # item
+    Image_Rec_single_random(f"images/{item}_icon.png")
     c = random.uniform(0.1, 1)
     time.sleep(c)
     pyautogui.press('space')
@@ -520,8 +516,7 @@ def count_cook_rod():
         trout_1 = 0
     if trout_2 is None:
         trout_2 = 0
-    all_prawns = (int(salmon_1) + int(trout_1)) - (int(salmon_2) + int(trout_2))
-    return all_prawns
+    return (int(salmon_1) + int(trout_1)) - (int(salmon_2) + int(trout_2))
 def cook_all_fish_fire(Take_Human_Break=False):
     Image_Rec_single('salmon_fish.png','cook fish', 5, 5, 0.99, 'left', 8, False)
     random_breaks(0.1, 1)
@@ -630,8 +625,7 @@ def count_cook():
         prawn_3 = 0
     if prawn_4 is None:
         prawn_4 = 0
-    all_prawns = int(prawn_1) - (int(prawn_2) + int(prawn_3) + int(prawn_4))
-    return all_prawns
+    return int(prawn_1) - (int(prawn_2) + int(prawn_3) + int(prawn_4))
 
 def barb_village_powercook_and_fish(Run_Duration_hours=6, invent_full=27):
     t_end = time.time() + (60 * 60 * Run_Duration_hours)
@@ -648,7 +642,12 @@ def barb_village_powercook_and_fish(Run_Duration_hours=6, invent_full=27):
                 pyautogui.press('esc')
             resizeImage()
             fishing_text = Image_to_Text('thresh', 'textshot.png')
-            if fishing_text.strip().lower() != 'fishing' and fishing_text.strip().lower() != 'fishinq' and fishing_text.strip().lower() != 'ishing' and fishing_text.strip().lower() != 'pishing':
+            if fishing_text.strip().lower() not in [
+                'fishing',
+                'fishinq',
+                'ishing',
+                'pishing',
+            ]:
                 random_breaks(0.2, 3)
                 pick_random_fishing_spot('salmon_fish')
                 random_breaks(5, 10)
@@ -687,7 +686,12 @@ def alkarid_powercook_and_fish(Take_Human_Break=False, Run_Duration_hours=6):
                 pyautogui.press('esc')
             resizeImage()
             fishing_text = Image_to_Text('thresh', 'textshot.png')
-            if fishing_text.strip().lower() != 'fishing' and fishing_text.strip().lower() != 'fishinq' and fishing_text.strip().lower() != 'ishing' and fishing_text.strip().lower() != 'pishing':
+            if fishing_text.strip().lower() not in [
+                'fishing',
+                'fishinq',
+                'ishing',
+                'pishing',
+            ]:
                 random_breaks(0.2, 3)
                 pick_random_fishing_spot('prawn_fish')
                 random_breaks(5, 10)
