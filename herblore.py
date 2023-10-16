@@ -36,14 +36,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def Image_Rec_single_closest(image, threshold=0.7, clicker='left'):
     functions.screen_Image(620, 480, 820, 750, 'closest.png')
@@ -85,7 +82,7 @@ def vial_inv(vial):
     myScreenshot.save(r"screen.png")
     img_rgb = cv2.imread('screen.png')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('images/' + str(vial) + '_icon.png', 0)
+    template = cv2.imread(f'images/{str(vial)}_icon.png', 0)
     w, h = template.shape[::-1]
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
@@ -118,13 +115,19 @@ def cleaning_weeds(weed):
     print('x: ', x)
     y = random.randrange(5, 40)  # y = random.randrange(50, 60)
     print('y: ', y)
-    image_Rec_clicker(str(weed) + '_grime.png','cleaning weed', threshold=0.8, fast=True, playarea=False)
+    image_Rec_clicker(
+        f'{str(weed)}_grime.png',
+        'cleaning weed',
+        threshold=0.8,
+        fast=True,
+        playarea=False,
+    )
 
 def combine_items(item, Pause=False):
     Image_Rec_single_closest("images/vial_water.png") # water
     c = random.uniform(0.1,0.9)
     time.sleep(c)
-    Image_Rec_single_closest("images/" + item + "_icon.png") # item
+    Image_Rec_single_closest(f"images/{item}_icon.png")
     c = random.uniform(0.1, 1)
     time.sleep(c)
     pyautogui.press('space')
@@ -302,8 +305,8 @@ def takepotion():
         potion = Image_Rec_single('prayer4_potion.png', 'taking potion', 0.95, 'left')
         if potion is False:
             potion = Image_Rec_single('prayer2_potion.png', 'taking potion', 0.95, 'left')
-            if potion is False:
-                potion = Image_Rec_single('prayer1_potion.png', 'taking potion', 0.95, 'left')
+        if potion is False:
+            potion = Image_Rec_single('prayer1_potion.png', 'taking potion', 0.95, 'left')
 def superglass_money():
     a = random.uniform(0.1, 0.35)
     find_Object(1)

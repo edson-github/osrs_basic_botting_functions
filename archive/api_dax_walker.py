@@ -39,10 +39,7 @@ def post_http_path(start, end, api_key, api_secret):
     print(data)
     response = requests.post(API_URL, json=data, headers=headers)
     print(response.text)
-    result = response.text
-    #stats = json.loads(response.text)
-    #print(stats)
-    return result
+    return response.text
 
 API_KEY = "sub_DPjXXzL5DeSiPf"
 #API_KEY = "sub_DPjcfqN4YkIxm8"

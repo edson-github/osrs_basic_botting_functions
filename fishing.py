@@ -65,14 +65,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
 
 def random_break(start, c):
     global newTime_break
@@ -98,13 +95,12 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 
@@ -175,8 +171,7 @@ def find_fish(showCoords=False, left=0, top=0, right=800, bottom=800, boundaries
     else:
         return False
 def pick_random_fishing_spot(showCoords=False):
-    fish = find_fish()
-    return fish
+    return find_fish()
 
 def timer_countdown():
     global Run_Duration_hours
@@ -202,7 +197,12 @@ def powerfisher(fish_type, Run_Duration_hours=6):
         resizeImage()
         fishing_text = Image_to_Text('thresh', 'textshot.png')
         # print(fished)
-        if fishing_text.strip().lower() != 'fishing' and fishing_text.strip().lower() != 'fishinq' and fishing_text.strip().lower() != 'ishing' and fishing_text.strip().lower() != 'pishing':
+        if fishing_text.strip().lower() not in [
+            'fishing',
+            'fishinq',
+            'ishing',
+            'pishing',
+        ]:
             random_breaks(0.2, 3)
             pick_random_fishing_spot(fish_type)
             random_breaks(5, 10)
@@ -217,15 +217,14 @@ def powerfisher(fish_type, Run_Duration_hours=6):
             spaces(a)
         actions = 'none'
         invent_crop()
-        fish_count = functions.invent_count(fish_type + '.png')
+        fish_count = functions.invent_count(f'{fish_type}.png')
         if fish_type == 'prawn_fish':
-            fish_count = functions.invent_count(fish_type + '.png', 0.95) + functions.invent_count('anch_fish.png', 0.95)
+            fish_count = functions.invent_count(
+                f'{fish_type}.png', 0.95
+            ) + functions.invent_count('anch_fish.png', 0.95)
         clue_count = Image_count(r'sea_puzzle.png')
         invent = fish_count + clue_count
-        if fish_type == 'prawn_fish' or fish_type == 'lobster_fish':
-            z = 27
-        else:
-            z = 26
+        z = 27 if fish_type in ['prawn_fish', 'lobster_fish'] else 26
         if invent > z:
             invent = functions.invent_enabled()
             if invent == 0:

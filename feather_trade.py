@@ -25,33 +25,22 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def gerrants_shop_active():
     shop = functions.Image_count('gerrant_shop.png', 0.75)
-    if shop > 0:
-        return True
-    else:
-        return False
-    return False
+    return shop > 0
 
 def tynan_shop_active():
     shop = functions.Image_count('tynan_shop.png', 0.75)
-    if shop > 0:
-        return True
-    else:
-        return False
-    return False
+    return shop > 0
 def trade_gerrant():
     shop = False
-    while shop == False:
+    while not shop:
         while functions.find_Object_right_quick(4) == False:
             d = random.uniform(0.1, 0.3)
             time.sleep(d)
@@ -61,7 +50,7 @@ def trade_gerrant():
 
 def trade_tynan():
     shop = False
-    while shop == False:
+    while not shop:
         while functions.find_Object_right_quick(4) == False:
             d = random.uniform(0.1, 0.3)
             time.sleep(d)

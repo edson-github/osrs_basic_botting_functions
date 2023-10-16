@@ -46,14 +46,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def random_break(start, c):
     global newTime_break
@@ -79,13 +76,12 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 

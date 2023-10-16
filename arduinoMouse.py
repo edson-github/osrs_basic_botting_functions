@@ -75,12 +75,8 @@ def position(x=None, y=None):
     NOTE: The position() function doesn't check for failsafe.
     """
     posx, posy = _position()
-    posx = int(posx)
-    posy = int(posy)
-    if x is not None:  # If set, the x parameter overrides the return value.
-        posx = int(x)
-    if y is not None:  # If set, the y parameter overrides the return value.
-        posy = int(y)
+    posx = int(x) if x is not None else int(posx)
+    posy = int(y) if y is not None else int(posy)
     return Point(posx, posy)
 
 def size():
@@ -107,18 +103,11 @@ def last_adjust(x, y, Debug=False):
     posx, posy = _position()
     if Debug:
         print(x,y)
-    if posx > x:
-        mov_x = x - posx
-    else:
-        mov_x = posx - x
-
-    if posy > y:
-        mov_y = y - posy
-    else:
-        mov_y = posy - y
+    mov_x = x - posx if posx > x else posx - x
+    mov_y = y - posy if posy > y else posy - y
     if Debug:
         print(posx - x, posy - y)
-    write_read(str(int(mov_x)) + ";" + str(int(mov_y)))
+    write_read(f"{int(mov_x)};{int(mov_y)}")
 def _moveTo(x, y, Debug=False):
     """Send the mouse move event to Windows by calling SetCursorPos() win32
     function.
@@ -136,19 +125,11 @@ def _moveTo(x, y, Debug=False):
     posx, posy = _position()
     if Debug:
         print(posx, posy)
-    if posx > x:
-        mov_x = x - posx
-    else:
-        mov_x = posx - x
-
-    if posy > y:
-        mov_y = y - posy
-    else:
-        mov_y = posy - y
-
+    mov_x = x - posx if posx > x else posx - x
+    mov_y = y - posy if posy > y else posy - y
     if Debug:
         print(posx - x, posy - y)
-    write_read(str(int(mov_x)) + ";" + str(int(mov_y)))
+    write_read(f"{mov_x};{mov_y}")
 
 def _mouseMoveDrag(moveOrDrag, x, y, xOffset, yOffset, duration, tween=linear, Debug=False):
 
@@ -181,8 +162,7 @@ def _mouseMoveDrag(moveOrDrag, x, y, xOffset, yOffset, duration, tween=linear, D
             print('num_steps:', num_steps)
         sleep_amount = duration / num_steps
         if sleep_amount < MINIMUM_SLEEP:
-            num_steps = int(duration / MINIMUM_SLEEP)
-            num_steps = num_steps * 4
+            num_steps = int(duration / MINIMUM_SLEEP) * 4
             sleep_amount = duration / num_steps
         if Debug:
             print('num_steps:', num_steps)
@@ -229,9 +209,9 @@ def arduino_mouse(x=100, y=100, duration=0.3,button=None,  port='COM5', baudrate
     # l is read by arduino to mean click left and r is to right click
     if button != None:
         if button == 'left':
-            write_read(str('l'))
+            write_read('l')
         if button == 'right':
-            write_read(str('r'))
+            write_read('r')
 
 port='COM5'
 baudrate=115200

@@ -34,14 +34,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def random_break(start, c):
     global newTime_break
@@ -65,12 +62,11 @@ def randomizer(timer_breaks, ibreaks):
     # b = random.uniform(4, 5)
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 
@@ -142,11 +138,10 @@ def get_buckets(item):
         random_breaks(0.3, 0.5)
         pick_options[item]()
         exit_bank()
-        bank_pass = True
+        return True
     else:
         print("bank inventory not found")
-        bank_pass = False
-    return bank_pass
+        return False
 
 def money_maker_water(num, item, Human_Break=True):
     bank_pass = False
@@ -156,7 +151,7 @@ def money_maker_water(num, item, Human_Break=True):
     barlist = ['bucket.png']
     while j > 0:
         bank_pass = False
-        while bank_pass == False:
+        while not bank_pass:
             bank_pass = get_buckets(item)
         random_breaks(0.05, 0.2)
         invent = invent_enabled()
@@ -197,7 +192,7 @@ def smith_items(num, bar, vol, smith_item, Human_Break=True):
         inv = Image_count(barlist[bar])
         smith_spot_varrock()
         random_breaks(7.5, 9)
-        smith_object(smith_item + '.png')
+        smith_object(f'{smith_item}.png')
         while inv > vol:
             if skill_lvl_up() != 0:
                 print('level up')
@@ -210,7 +205,7 @@ def smith_items(num, bar, vol, smith_item, Human_Break=True):
                 spaces(a)
                 smith_spot_varrock()
                 random_breaks(1, 2)
-                smith_object(smith_item + '.png')
+                smith_object(f'{smith_item}.png')
             inv = Image_count(barlist[bar])
         j -= 1
         if Human_Break:

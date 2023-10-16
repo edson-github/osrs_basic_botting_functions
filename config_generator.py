@@ -21,26 +21,23 @@ def ensure_dir():
 bool_config = os.path.isfile(resourcePath('pybot-config.yaml'))
 
 if not bool_config:
-    f = open(resourcePath("pybot-config.yaml"), "w")
-    config_list = [['client title','OpenOSRS'], ['pc_profile','C:\\Users\\i7 8700'],
-               ['file_path_to_client', '\\.openosrs\\'], ['tesseract_path','C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'],
-                   ['enable_on_start', True]]
+    with open(resourcePath("pybot-config.yaml"), "w") as f:
+        config_list = [['client title','OpenOSRS'], ['pc_profile','C:\\Users\\i7 8700'],
+                   ['file_path_to_client', '\\.openosrs\\'], ['tesseract_path','C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'],
+                       ['enable_on_start', True]]
 
-    article_info= [{
-                'Config': {
-                    'client_title': config_list[0][1],
-                    'pc_profile': config_list[1][1],
-                    'file_path_to_client': config_list[2][1],
-                    'tesseract_path': config_list[3][1],
-                    'enable_on_start': config_list[4][1]
-                }
-    }]
+        article_info= [{
+                    'Config': {
+                        'client_title': config_list[0][1],
+                        'pc_profile': config_list[1][1],
+                        'file_path_to_client': config_list[2][1],
+                        'tesseract_path': config_list[3][1],
+                        'enable_on_start': config_list[4][1]
+                    }
+        }]
 
-    data = yaml.dump(article_info, f)
-    f.close()
-
-bool_config = os.path.isfile(resourcePath('pybot-config.yaml'))
-if bool_config:
+        data = yaml.dump(article_info, f)
+if bool_config := os.path.isfile(resourcePath('pybot-config.yaml')):
     print('config already exists!')
     with open(resourcePath("pybot-config.yaml"), "r") as yamlfile:
         data = yaml.load(yamlfile, Loader=yaml.FullLoader)
@@ -127,10 +124,7 @@ if data[0]['Config']['enable_on_start'] == True:
 
     def clicked():
         c_title = test[0].get()
-        if is_on:
-            t_enable = True
-        else:
-            t_enable = False
+        t_enable = bool(is_on)
         p_profile = test[1].get()
         f_path = test[2].get()
         t_path = test[3].get()

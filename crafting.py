@@ -53,14 +53,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def random_break(start, c):
     global newTime_break
@@ -86,13 +83,12 @@ def randomizer(timer_breaks, ibreaks):
 
 
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     b = random.uniform(20, 250)
-    print('pausing for ' + str(b) + ' seconds')
+    print(f'pausing for {b} seconds')
     time.sleep(b)
     newTime_break = True
 
@@ -156,11 +152,7 @@ def craft_bar_items(num, type, craft_item, run_time_minutes=360):
     # run_time_minutes 6hrs by default
     t_end = time.time() + 60 * run_time_minutes
     while time.time() < t_end or num <= 0:
-        if type == 2:
-            j = round((num) / 13) + 1
-        else:
-            j = round((num) / 27) + 1
-
+        j = round((num) / 13) + 1 if type == 2 else round((num) / 27) + 1
         pick_options = {0: pick_gold_bars,
                         1: pick_silver_bars,
                         2: pick_sapphires
@@ -224,11 +216,11 @@ def get_bank_craft_items(type):
         random_breaks(0.1, 0.5)
         pick_options[type]()
         exit_bank()
-        return bank
     else:
         actions =  "bank inventory not found"
         bank_spot_edgville()
-        return bank
+
+    return bank
 
 inv = 0
 coords = (0, 0)

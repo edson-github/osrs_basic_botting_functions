@@ -132,7 +132,7 @@ class Walking():
         while live_x != new_x or live_y != new_y:
             print(f"hasn't reach next point...current position ({live_x},{live_y}) next target ({new_x},{live_y})" )
             position_data = self.get_live_info('worldPoint')
-            if position_data == None:
+            if position_data is None:
                 live_x, live_y = live_x, live_y
             else:
                 live_x, live_y = position_data['x'], position_data['y']
@@ -153,9 +153,9 @@ class Walking():
             print(f"hasn't reach next point...current position ({live_x},{live_y}) next target ({new_x},{live_y})" )
             position_data = self.get_live_info('worldPoint')
             print("position_data:", position_data)
-            while position_data == None:
+            while position_data is None:
                 position_data = self.get_live_info('worldPoint')
-            if position_data == None:
+            if position_data is None:
                 live_x, live_y = live_x, live_y
             else:
                 live_x, live_y = position_data['x'], position_data['y']
@@ -214,7 +214,7 @@ class Walking():
             sleep(2)
             # Update position data.
             position_data = self.get_live_info('worldPoint')
-            while position_data == None:
+            while position_data is None:
                 sleep(0.05)
                 position_data = self.get_live_info('worldPoint')
             live_pos = position_data['x'], position_data['y']

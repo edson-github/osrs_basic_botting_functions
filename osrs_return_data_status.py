@@ -4,45 +4,37 @@ import json
 def get_live_info():
     '''Returns specific live information from the game client via the Status Socket plugin.'''
     try:
-        f = open('live_data.json', "r+")
-        data = json.load(f)
-        #print(data)
-        f.close()
+        with open('live_data.json', "r+") as f:
+            data = json.load(f)
         return data
     except:
         pass
 
 def update_inventory():
     """Updates the current inventory."""
-    inventory = None
     data = get_live_info()
-    if data != None:
-        inventory = data['inventory']
-    return inventory
+    return data['inventory'] if data != None else None
 
 def update_positon():
     """Updates the current position of the player."""
-    position = None
     data = get_live_info()
-    if data != None:
-        position = [data['worldPoint']['x'], data['worldPoint']['y']]
-    return position
+    return (
+        [data['worldPoint']['x'], data['worldPoint']['y']]
+        if data != None
+        else None
+    )
 def update_run_energy():
     """Updates the current run energy."""
     run_energy = None
     data = get_live_info()
     while data is None:
          data = get_live_info()
-    run_energy = data['run energy']
-    return run_energy
+    return data['run energy']
 
 def update_camera_angle():
     """Updates current camera angle."""
-    camera_angle = None
     data = get_live_info()
-    if data != None:
-        camera_angle = data['camera']['yaw']
-    return camera_angle
+    return data['camera']['yaw'] if data != None else None
 
 get_live_info()
 t = update_run_energy()

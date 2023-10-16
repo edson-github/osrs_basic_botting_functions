@@ -46,15 +46,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-    
 iflag = False
 
 global newTime_break
@@ -73,14 +69,13 @@ class bcolors:
 
     
 def timer():
-    startTime = time.time()
-    return startTime
+    return time.time()
 
 
 def random_pause():
     global actions
     b = random.uniform(20, 250)
-    actions = 'pausing for ' + str(b) + ' seconds'
+    actions = f'pausing for {b} seconds'
     time.sleep(b)
     newTime_break = True
 
@@ -142,14 +137,13 @@ def powerattack_text(monster='chicken', burybones=True, Pickup_loot=False, Take_
         resizeImage()
         combat_text = Image_to_Text('thresh', 'textshot.png')
         combat_text = re.sub('[^A-Za-z0-9]+', ' ', combat_text)
-        #print(combat_text)
-        attack = 0
-        for monsters in monster_array[group]:
-            #print(monsters)
-            if combat_text.strip().lower().find(monsters) == -1:
-                attack += 1
-        if Plugin_Enabled:
-            if attack == monster:
+        attack = sum(
+            1
+            for monsters in monster_array[group]
+            if combat_text.strip().lower().find(monsters) == -1
+        )
+        if attack == monster:
+            if Plugin_Enabled:
                 attack = 1
         if attack == len(monster_array[group]):
             d = random.uniform(0.05, 0.1)

@@ -35,14 +35,11 @@ try:
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
-
 try:
     x_win, y_win, w_win, h_win = core.getWindow(data[0]['Config']['client_title'])
 except BaseException:
     print("Unable to find window:", data[0]['Config']['client_title'], "| Please see list of window names below:")
     core.printWindows()
-    pass
     
 def wood_inv(wood):
     counter = 0
@@ -269,7 +266,6 @@ def pick_roots_bank():
     time.sleep(c)
 
 def skill_lvl_up():
-    counter = 0
     myScreenshot = pyautogui.screenshot()
     myScreenshot.save(r"screen.png")
     img_rgb = cv2.imread('screen.png')
@@ -279,11 +275,7 @@ def skill_lvl_up():
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
     loc = np.where(res >= threshold)
-    for pt in zip(*loc[::-1]):
-        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-        counter += 1
-    #cv2.imwrite('res.png', img_rgb)
-    return counter
+    return sum(1 for _ in zip(*loc[::-1]))
 
 def make_crossbow_lumb_climbstairs_down():
     c = random.uniform(6,8)
@@ -467,14 +459,6 @@ def string_bows(name, x, y, x2, y2):
                 break
         if wood_inv('images/stringbow_icon.png') == 0:
             break
-            if skill_lvl_up() == 1:
-                Image_Rec_single_closest('images/stringbow_icon.png', 0.7, 'left')
-                e = random.uniform(0.1, 0.9)
-                time.sleep(e)
-                Image_Rec_single_closest(name, 0.7, 'left')
-                e = random.uniform(0.1, 0.9)
-                time.sleep(e)
-                pyautogui.press('space')
     time.sleep(c)
 
 def Image_Rec_single_closest(image, threshold=0.7, clicker='left'):

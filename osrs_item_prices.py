@@ -109,10 +109,8 @@ data = format_data.drop(columns='timestamp').fillna(0)
 data.to_csv(os.path.dirname('csv') + 'csv\\raw_data-' + datetime_time + '.csv', index=False)
 print(os.path.dirname('csv') + 'csv\\raw_data-' + datetime_time + '.csv')
 html = data.to_html()
-text_file = open("index.html", "w")
-text_file.write(html)
-text_file.close()
-
+with open("index.html", "w") as text_file:
+    text_file.write(html)
 url = "index.html"
 webbrowser.open(url, new=new)
 
